@@ -163,8 +163,8 @@ function App() {
     const [inputValue, setInputValue] = useState("");
     const [suggestions, setSuggestions] = useState([]);
     const [selectedItems, setSelectedItems] = useState([]);
-    const [suggestionsToShow, setSuggestionsToShow] = useState(4);
-    const [prediction, setPrediction] = useState("");
+    const [suggestionsToShow] = useState(4);
+    const [prediction] = useState("");
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [predictedDisease, setPredictedDisease] = useState("");
 
@@ -216,7 +216,6 @@ function App() {
         axios
             .post("https://disease.swoyam.engineer/predict", payload)
             .then((response) => {
-                const { disease } = response.data.disease;
                 console.log(predictedDisease);
                 setPredictedDisease(response.data.disease);
                 setModalIsOpen(true); // Open the modal
