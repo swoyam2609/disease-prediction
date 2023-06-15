@@ -1,13 +1,12 @@
-import "./App.css";
 import React from "react";
 import Lottie from "react-lottie";
-import animationData from "./assets/bg.json";
+import animationData from "../assets/bg.json";
 import { useState } from "react";
-import logoAnimation from "./assets/logo.json";
+import logoAnimation from "../assets/logo.json";
 import axios from "axios";
 import Modal from "react-modal";
 
-function App() {
+function Home() {
     const defaultOptions = {
         loop: true,
         autoplay: true,
@@ -332,4 +331,4 @@ function App() {
     );
 }
 
-export default App;
+export default Home;
