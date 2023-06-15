@@ -4,6 +4,8 @@ import Lottie from "react-lottie";
 import animationData from "./assets/bg.json";
 import { useState } from "react";
 import logoAnimation from "./assets/logo.json";
+import axios from "axios";
+import Modal from "react-modal";
 
 function App() {
     const defaultOptions = {
@@ -162,6 +164,9 @@ function App() {
     const [suggestions, setSuggestions] = useState([]);
     const [selectedItems, setSelectedItems] = useState([]);
     const [suggestionsToShow, setSuggestionsToShow] = useState(4);
+    const [prediction, setPrediction] = useState("");
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [predictedDisease, setPredictedDisease] = useState("");
 
     const handleInputChange = (e) => {
         const value = e.target.value;
@@ -201,6 +206,28 @@ function App() {
 
     const handleResetSelections = () => {
         setSelectedItems([]);
+    };
+
+    const handlePrediction = () => {
+        const payload = {
+            symptoms: selectedItems,
+        };
+
+        axios
+            .post("https://disease.swoyam.engineer/predict", payload)
+            .then((response) => {
+                const { disease } = response.data.disease;
+                console.log(predictedDisease);
+                setPredictedDisease(response.data.disease);
+                setModalIsOpen(true); // Open the modal
+            })
+            .catch((error) => {
+                console.error("Prediction error:", error);
+            });
+    };
+
+    const closeModal = () => {
+        setModalIsOpen(false);
     };
 
     return (
@@ -258,7 +285,7 @@ function App() {
 
                         <button
                             className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
-                            // onClick={handlePredict}
+                            onClick={handlePrediction}
                         >
                             Predict
                         </button>
@@ -276,6 +303,32 @@ function App() {
                     </section>
                 </div>
             </div>
+
+            {prediction && (
+                <div className="bg-blue-800 text-white text-center py-4">
+                    <p className="text-lg">Predicted Disease: {prediction}</p>
+                </div>
+            )}
+
+            <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                contentLabel="Predicted Disease Modal"
+                className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+            >
+                <div className="bg-white rounded-md p-8 max-w-md mx-auto">
+                    <p className="text-lg">You might be suffering from:</p>
+                    <p className="text-2xl font-bold mb-4">
+                        {predictedDisease}
+                    </p>
+                    <button
+                        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                        onClick={closeModal}
+                    >
+                        Close
+                    </button>
+                </div>
+            </Modal>
         </>
     );
 }
