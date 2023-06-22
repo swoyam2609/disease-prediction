@@ -46,3 +46,8 @@ Contributions are welcome! If you find any issues or want to enhance the applica
 
 ## License
 This project is licensed under the MIT License.
+
+## Demo
+
+https://github.com/swoyam2609/disease-prediction/assets/96427746/20318500-f2a5-418e-b31d-969c5bc9c5f7
+
